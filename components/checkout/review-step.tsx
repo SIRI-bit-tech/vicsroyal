@@ -4,7 +4,6 @@ import React from 'react';
 import { ArrowLeft, Send } from 'lucide-react';
 import { CartItem } from '@/types/order';
 import { formatNaira } from '@/lib/format-currency';
-import { TurnstileWidget } from '../ui/turnstile';
 
 interface ReviewStepProps {
   customerName: string;
@@ -14,8 +13,6 @@ interface ReviewStepProps {
   items: CartItem[];
   subtotal: number;
   isSubmitting: boolean;
-  turnstileToken: string | null;
-  onTurnstileVerify: (token: string) => void;
   onBack: () => void;
   onConfirm: () => void;
 }
@@ -28,8 +25,6 @@ export function ReviewStep({
   items,
   subtotal,
   isSubmitting,
-  turnstileToken,
-  onTurnstileVerify,
   onBack,
   onConfirm,
 }: ReviewStepProps) {
@@ -46,14 +41,14 @@ export function ReviewStep({
         Confirm your order details before transferring to WhatsApp.
       </p>
 
-      <div className="p-4 rounded-2xl bg-[#2B0A1F]/30 border border-[#2B0A1F] space-y-3 mb-4">
+      <div className="p-4 rounded-2xl bg-[#2B0A1F]/30 border border-[#2B0A1F] space-y-3 mb-6">
         <div className="text-xs space-y-1">
           <p className="text-gray-400"><strong className="text-white">Customer:</strong> {customerName} ({phoneNumber})</p>
           <p className="text-gray-400"><strong className="text-white">Address:</strong> {deliveryAddress}</p>
           {notes && <p className="text-gray-400"><strong className="text-white">Note:</strong> {notes}</p>}
         </div>
 
-        <div className="border-t border-[#2B0A1F] pt-3 space-y-2 max-h-36 overflow-y-auto">
+        <div className="border-t border-[#2B0A1F] pt-3 space-y-2 max-h-40 overflow-y-auto">
           {items.map(({ product, quantity }) => (
             <div key={product.id} className="flex justify-between text-xs">
               <span className="text-white font-medium">{quantity}× {product.name}</span>
@@ -67,13 +62,6 @@ export function ReviewStep({
           <span className="text-lg font-black text-[#FF4FA0]">{formatNaira(subtotal)}</span>
         </div>
       </div>
-
-      {/* Cloudflare Turnstile Bot Protection Widget reading from process.env */}
-      <TurnstileWidget
-        action="checkout"
-        onVerify={onTurnstileVerify}
-        onExpire={() => onTurnstileVerify('')}
-      />
 
       <div className="space-y-3">
         <button

@@ -19,7 +19,6 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [notes, setNotes] = useState('');
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -56,14 +55,10 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
           notes,
           items: snapshotItems,
           totalAmount: subtotal,
-          turnstileToken,
         }),
       });
 
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || 'Order creation failed');
-      }
+      if (!res.ok) throw new Error('Order creation failed');
 
       const adminPhone = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP_NUMBER || DEFAULT_WHATSAPP_NUMBER;
       const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
@@ -85,7 +80,7 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
       window.open(waUrl, '_blank');
     } catch (err: any) {
       console.error(err);
-      setError(err.message || 'Failed to process order. Please try again.');
+      setError('Failed to process order. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -143,8 +138,6 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
             items={items}
             subtotal={subtotal}
             isSubmitting={isSubmitting}
-            turnstileToken={turnstileToken}
-            onTurnstileVerify={setTurnstileToken}
             onBack={() => setStep('form')}
             onConfirm={handleConfirmAndSend}
           />
