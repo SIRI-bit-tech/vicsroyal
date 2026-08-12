@@ -26,7 +26,7 @@ export default function LoginAdminPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Login failed');
 
-      router.push('/admin/products');
+      router.push('/admin/dashboard');
     } catch (err: any) {
       setError(err.message || 'Invalid login credentials');
     } finally {
@@ -51,9 +51,9 @@ export default function LoginAdminPage() {
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-4 text-xs">
           <div>
-            <label className="block text-xs font-bold text-gray-300 mb-1">Email Address</label>
+            <label className="block font-bold text-gray-300 mb-1">Email Address</label>
             <input
               type="email"
               required
@@ -65,7 +65,7 @@ export default function LoginAdminPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-300 mb-1">Password</label>
+            <label className="block font-bold text-gray-300 mb-1">Password</label>
             <input
               type="password"
               required

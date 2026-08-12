@@ -2,19 +2,23 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Product } from '../../types/product';
-import { formatNaira } from '../../lib/format-currency';
-import { useCart } from '../../context/cart-context';
-import { ShoppingBag, Plus, Minus, CheckCircle, ShieldCheck, Truck } from 'lucide-react';
-import { motion } from 'motion/react';
+import { ShoppingBag, CheckCircle, ShieldCheck } from 'lucide-react';
+import { Product } from '@/types/product';
+import { formatNaira } from '@/lib/format-currency';
+import { useCart } from '@/context/cart-context';
 
-interface ProductDetailProps {
+interface ProductDetailViewProps {
   product: Product;
 }
 
-export function ProductDetailView({ product }: ProductDetailProps) {
+export function ProductDetailView({ product }: ProductDetailViewProps) {
   const { addItem, setIsCartOpen } = useCart();
-  const [selectedImage, setSelectedImage] = useState(product.images[0] || '/seed/products/wig-1.jpg');
+
+  const productImages = product.images && product.images.length > 0
+    ? product.images
+    : ['/seed/products/hair-product-1-1.jpg'];
+
+  const [selectedImage, setSelectedImage] = useState(productImages[0]);
   const [quantity, setQuantity] = useState(1);
 
   const handleAddToCart = () => {
@@ -24,97 +28,79 @@ export function ProductDetailView({ product }: ProductDetailProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Left: Gallery */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        {/* Images Gallery Panel */}
         <div className="space-y-4">
-          <div className="relative aspect-[4/5] w-full rounded-3xl overflow-hidden bg-[#2B0A1F]/30 border border-[#2B0A1F]">
+          <div className="relative aspect-[4/5] w-full rounded-3xl overflow-hidden bg-[#2B0A1F]/30 border border-[#2B0A1F] shadow-2xl">
             <Image
               src={selectedImage}
               alt={product.name}
               fill
               priority
-              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
             />
+            {product.isNewArrival && (
+              <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-[#FF4FA0] text-white font-black text-xs uppercase shadow-lg">
+                New Arrival
+              </span>
+            )}
           </div>
 
-          {product.images.length > 1 && (
-            <div className="flex gap-4 overflow-x-auto pb-2">
-              {product.images.map((img, i) => (
+          {/* Secondary Gallery Photos Below Main Image */}
+          {productImages.length > 1 && (
+            <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
+              {productImages.map((img, idx) => (
                 <button
-                  key={i}
+                  key={idx}
                   onClick={() => setSelectedImage(img)}
-                  className={`relative w-20 h-24 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all ${
-                    selectedImage === img ? 'border-[#E6007E]' : 'border-[#2B0A1F] opacity-60'
+                  className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all ${
+                    selectedImage === img ? 'border-[#E6007E] scale-105 shadow-lg' : 'border-[#2B0A1F] opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <Image src={img} alt="" fill className="object-cover" />
+                  <Image src={img} alt={`Gallery ${idx + 1}`} fill className="object-cover" />
                 </button>
               ))}
             </div>
           )}
         </div>
 
-        {/* Right: Product Info & Actions */}
-        <div className="flex flex-col justify-center space-y-6">
+        {/* Product Details Panel */}
+        <div className="space-y-6">
           <div>
-            <span className="inline-block px-3 py-1 rounded-full bg-[#2B0A1F] text-[#FF4FA0] text-xs font-extrabold uppercase tracking-wider mb-3">
-              {product.stockStatus.replace('_', ' ')}
-            </span>
-            <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">{product.name}</h1>
-            <div className="flex items-baseline gap-4">
-              <span className="text-3xl font-black text-[#FF4FA0]">{formatNaira(product.price)}</span>
-              {product.compareAtPrice && (
-                <span className="text-lg text-gray-500 line-through">{formatNaira(product.compareAtPrice)}</span>
-              )}
-            </div>
+            <span className="text-xs font-bold text-[#FF4FA0] tracking-widest uppercase">VIC ROYAL BEAUTY</span>
+            <h1 className="text-3xl sm:text-4xl font-black text-white mt-1">{product.name}</h1>
           </div>
 
-          <div className="border-y border-[#2B0A1F] py-6">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Description</h3>
-            <p className="text-sm text-gray-300 leading-relaxed">{product.description}</p>
+          <div className="flex items-baseline gap-4">
+            <span className="text-3xl font-extrabold text-[#FF4FA0]">{formatNaira(product.price)}</span>
+            {product.compareAtPrice && (
+              <span className="text-lg text-gray-500 line-through">{formatNaira(product.compareAtPrice)}</span>
+            )}
           </div>
 
-          {/* Quantity Selector & Add to Cart */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Quantity:</span>
-              <div className="flex items-center border border-[#2B0A1F] rounded-xl bg-[#0A0A0A] p-1">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 text-gray-400 hover:text-white"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="px-4 text-sm font-bold text-white">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 text-gray-400 hover:text-white"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
+          <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line border-t border-b border-[#2B0A1F] py-6">
+            {product.description}
+          </p>
+
+          <div className="flex items-center gap-4">
+            <div className="flex items-center border border-[#2B0A1F] rounded-xl bg-[#0A0A0A] p-1">
+              <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center text-white font-bold text-lg hover:bg-[#2B0A1F] rounded-lg">-</button>
+              <span className="px-4 text-sm font-bold text-white">{quantity}</span>
+              <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center text-white font-bold text-lg hover:bg-[#2B0A1F] rounded-lg">+</button>
             </div>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <button
               onClick={handleAddToCart}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#E6007E] to-[#FF4FA0] text-white font-extrabold text-lg flex items-center justify-center gap-3 shadow-2xl hover:opacity-95 transition-opacity"
+              className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#E6007E] to-[#FF4FA0] text-white font-extrabold text-base flex items-center justify-center gap-2 shadow-xl hover:opacity-95 transition-all"
             >
-              <ShoppingBag className="w-5 h-5" /> Add to Shopping Cart ({formatNaira(product.price * quantity)})
-            </motion.button>
+              <ShoppingBag className="w-5 h-5" /> Add to Shopping Cart
+            </button>
           </div>
 
-          {/* Trust Highlights */}
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#2B0A1F]/50 text-xs text-gray-400">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#E6007E]" />
-              <span>100% Virgin Hair Guaranteed</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Truck className="w-4 h-4 text-[#E6007E]" />
-              <span>WhatsApp Direct Support & Delivery</span>
-            </div>
+          <div className="space-y-3 pt-6 border-t border-[#2B0A1F] text-xs text-gray-400">
+            <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#10B981]" /><span className="text-white font-semibold">100% Virgin Human Hair Guaranteed</span></div>
+            <div className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-[#FF4FA0]" /><span className="text-white font-semibold">Direct WhatsApp Concierge & Secure Hand-off</span></div>
           </div>
         </div>
       </div>

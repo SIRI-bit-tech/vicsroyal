@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Plus, Trash2, Edit2, Loader2 } from 'lucide-react';
 import { Product } from '@/types/product';
 import { formatNaira } from '@/lib/format-currency';
+import { ImageUpload } from '@/components/admin/image-upload';
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -17,7 +18,7 @@ export default function AdminProductsPage() {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [compareAtPrice, setCompareAtPrice] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [images, setImages] = useState<string[]>([]);
   const [categoryId, setCategoryId] = useState('');
   const [stockStatus, setStockStatus] = useState<'in_stock' | 'low_stock' | 'out_of_stock'>('in_stock');
   const [isBestSeller, setIsBestSeller] = useState(false);
@@ -43,7 +44,7 @@ export default function AdminProductsPage() {
 
   const handleOpenCreate = () => {
     setEditingProduct(null);
-    setName(''); setSlug(''); setDescription(''); setPrice(''); setCompareAtPrice(''); setImageUrl('');
+    setName(''); setSlug(''); setDescription(''); setPrice(''); setCompareAtPrice(''); setImages([]);
     setCategoryId(categories[0]?.id || ''); setStockStatus('in_stock');
     setIsBestSeller(false); setIsFeatured(false); setIsNewArrival(true); setSearchTags('');
     setShowModal(true);
@@ -52,7 +53,7 @@ export default function AdminProductsPage() {
   const handleOpenEdit = (p: Product) => {
     setEditingProduct(p);
     setName(p.name); setSlug(p.slug); setDescription(p.description); setPrice(String(p.price));
-    setCompareAtPrice(p.compareAtPrice ? String(p.compareAtPrice) : ''); setImageUrl(p.images[0] || '');
+    setCompareAtPrice(p.compareAtPrice ? String(p.compareAtPrice) : ''); setImages(p.images || []);
     setCategoryId(p.categoryId); setStockStatus(p.stockStatus);
     setIsBestSeller(p.isBestSeller); setIsFeatured(p.isFeatured); setIsNewArrival(Boolean(p.isNewArrival));
     setSearchTags(p.searchTags ? p.searchTags.join(', ') : '');
@@ -70,7 +71,7 @@ export default function AdminProductsPage() {
     const payload = {
       id: editingProduct?.id, name, slug: slug || name.toLowerCase().replace(/\s+/g, '-'),
       description, price: Number(price), compareAtPrice: compareAtPrice ? Number(compareAtPrice) : null,
-      images: [imageUrl || '/seed/products/hair-product-1-1.jpg'], categoryId, stockStatus,
+      images: images.length > 0 ? images : ['/seed/products/hair-product-1-1.jpg'], categoryId, stockStatus,
       isBestSeller, isFeatured, isNewArrival,
       searchTags: searchTags.split(',').map((t) => t.trim()).filter(Boolean),
     };
@@ -103,7 +104,7 @@ export default function AdminProductsPage() {
                     <div className="relative w-10 h-12 rounded-lg overflow-hidden bg-[#2B0A1F]">
                       <Image src={p.images[0] || '/seed/products/hair-product-1-1.jpg'} alt="" fill className="object-cover" />
                     </div>
-                    <div><h4 className="font-bold text-white text-sm">{p.name}</h4><p className="text-[10px] text-gray-500">{p.slug}</p></div>
+                    <div><h4 className="font-bold text-white text-sm">{p.name}</h4><p className="text-[10px] text-gray-500">{p.images.length} photos</p></div>
                   </td>
                   <td className="p-4 font-extrabold text-[#FF4FA0]">{formatNaira(p.price)}</td>
                   <td className="p-4">
@@ -135,7 +136,7 @@ export default function AdminProductsPage() {
                 <div><label className="block text-gray-300 font-bold mb-1">Compare At Price</label><input type="number" value={compareAtPrice} onChange={(e) => setCompareAtPrice(e.target.value)} className="w-full p-3 rounded-xl bg-[#2B0A1F]/40 border border-[#2B0A1F] text-white" /></div>
               </div>
               <div><label className="block text-gray-300 font-bold mb-1">Description</label><textarea required rows={2} value={description} onChange={(e) => setDescription(e.target.value)} className="w-full p-3 rounded-xl bg-[#2B0A1F]/40 border border-[#2B0A1F] text-white" /></div>
-              <div><label className="block text-gray-300 font-bold mb-1">Image URL</label><input type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className="w-full p-3 rounded-xl bg-[#2B0A1F]/40 border border-[#2B0A1F] text-white" /></div>
+              <ImageUpload images={images} onChange={setImages} />
               <div><label className="block text-gray-300 font-bold mb-1">Category</label><select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="w-full p-3 rounded-xl bg-[#2B0A1F]/40 border border-[#2B0A1F] text-white">{categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}</select></div>
               <div className="flex flex-wrap gap-6 pt-2">
                 <label className="flex items-center gap-2 cursor-pointer text-white font-bold"><input type="checkbox" checked={isNewArrival} onChange={(e) => setIsNewArrival(e.target.checked)} className="accent-[#FF4FA0]" /> New Arrival ✨</label>

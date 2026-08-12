@@ -1,7 +1,12 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { clearAdminSession } from '@/lib/auth';
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   await clearAdminSession();
-  return NextResponse.json({ success: true });
+  return NextResponse.redirect(new URL('/', req.url));
+}
+
+export async function GET(req: NextRequest) {
+  await clearAdminSession();
+  return NextResponse.redirect(new URL('/', req.url));
 }

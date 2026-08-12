@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { CartProvider } from '@/context/cart-context';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
-import { CartDrawer } from '@/components/cart/cart-drawer';
-import { FloatingWhatsAppButton } from '@/components/ui/floating-whatsapp-button';
+import { StorefrontWrapper } from '@/components/layout/storefront-wrapper';
 
 export const metadata: Metadata = {
   title: 'VIC ROYAL BEAUTY | Luxury Virgin Hair, Wigs & HD Lace Closures',
@@ -23,11 +20,7 @@ export default function RootLayout({
         className="bg-[#0A0A0A] text-white min-h-screen flex flex-col antialiased selection:bg-[#E6007E] selection:text-white"
       >
         <CartProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <CartDrawer />
-          <FloatingWhatsAppButton />
+          <StorefrontWrapper>{children}</StorefrontWrapper>
         </CartProvider>
       </body>
     </html>

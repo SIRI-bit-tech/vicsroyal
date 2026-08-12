@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Lock, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 export default function RegisterAdminPage() {
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function RegisterAdminPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Registration failed');
 
-      router.push('/admin/products');
+      router.push('/admin');
     } catch (err: any) {
       setError(err.message || 'Setup failed');
     } finally {
@@ -74,9 +74,9 @@ export default function RegisterAdminPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <div>
-            <label className="block text-xs font-bold text-gray-300 mb-1">Admin Email</label>
+            <label className="block font-bold text-gray-300 mb-1">Admin Email</label>
             <input
               type="email"
               required
@@ -88,7 +88,7 @@ export default function RegisterAdminPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-300 mb-1">Secure Password</label>
+            <label className="block font-bold text-gray-300 mb-1">Secure Password</label>
             <input
               type="password"
               required

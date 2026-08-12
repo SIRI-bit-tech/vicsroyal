@@ -1,18 +1,22 @@
 import React from 'react';
-import { redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getAdminSession } from '../../lib/auth';
-import { ShoppingBag, Layers, Image as ImageIcon, MessageSquare, ShoppingCart, LogOut } from 'lucide-react';
+import { getAdminSession } from '@/lib/auth';
+import { LayoutDashboard, ShoppingBag, Layers, Image as ImageIcon, MessageSquare, ShoppingCart, LogOut } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard | VIC ROYAL BEAUTY',
+  title: 'Admin Console | VIC ROYAL BEAUTY',
   robots: { index: false, follow: false },
 };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getAdminSession();
-  if (!session) redirect('/auth/admin/login');
+  
+  // Return 404 Not Found for any unauthenticated attempt to access /admin routes
+  if (!session) {
+    notFound();
+  }
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex flex-col md:flex-row text-white">
@@ -27,6 +31,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
 
           <nav className="space-y-2">
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#2B0A1F] text-sm font-bold text-gray-300 hover:text-white transition-colors"
+            >
+              <LayoutDashboard className="w-4 h-4 text-[#FF4FA0]" /> Dashboard
+            </Link>
             <Link
               href="/admin/products"
               className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#2B0A1F] text-sm font-bold text-gray-300 hover:text-white transition-colors"
