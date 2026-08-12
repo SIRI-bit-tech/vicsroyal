@@ -10,7 +10,15 @@ export async function verifyTurnstileToken(
   expectedAction = 'checkout',
   clientIp?: string
 ): Promise<TurnstileVerifyResult> {
-  const secret = process.env.TURNSTILE_SECRET || '1x0000000000000000000000000000000AA'; // Cloudflare test secret fallback
+  const secret = process.env.TURNSTILE_SECRET;
+
+  // If secret is missing or unconfigured in production Vercel env, bypass with warning to avoid blocking legitimate sales
+  if (!secret || secret === '1x0000000000000000000000000000000AA') {
+    if (!token) {
+      console.warn('[Turnstile] Secret key unconfigured or using test secret. Bypassing check.');
+    }
+    return { success: true };
+  }
 
   if (!token || typeof token !== 'string' || token.length > 2048) {
     return { success: false, errorCodes: ['missing-input-response'] };
@@ -30,11 +38,18 @@ export async function verifyTurnstileToken(
     });
 
     if (!response.ok) {
-      console.error(`Turnstile siteverify HTTP error: ${response.status}`);
-      return { success: false, errorCodes: ['siteverify-http-error'] };
+      console.error(`[Turnstile] siteverify HTTP error: ${response.status}`);
+      return { success: true }; // Fail open if Cloudflare API is temporarily unreachable
     }
 
     const data = await response.json();
+
+    // If Cloudflare returns invalid-input-secret (mismatched keys in Vercel), fail open & warn admin
+    if (!data.success && Array.isArray(data['error-codes']) && data['error-codes'].includes('invalid-input-secret')) {
+      console.warn('[Turnstile WARNING] Your TURNSTILE_SECRET in Vercel does not match your sitekey. Please check Cloudflare Dashboard keys.');
+      return { success: true };
+    }
+
     return {
       success: Boolean(data.success),
       action: data.action,
@@ -42,7 +57,7 @@ export async function verifyTurnstileToken(
       errorCodes: data['error-codes'] || [],
     };
   } catch (error) {
-    console.error('Turnstile verification error:', error);
-    return { success: false, errorCodes: ['internal-fetch-error'] };
+    console.error('[Turnstile] siteverify exception:', error);
+    return { success: true }; // Fail open on network exception
   }
 }

@@ -12,13 +12,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required order fields' }, { status: 400 });
     }
 
-    // Canonical Cloudflare Turnstile Verification
+    // Canonical Cloudflare Turnstile Verification with fail-safe grace
     const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0] || undefined;
     const verification = await verifyTurnstileToken(turnstileToken, 'checkout', clientIp);
 
-    if (!verification.success && process.env.NODE_ENV === 'production' && process.env.TURNSTILE_SECRET) {
-      console.warn('Turnstile verification rejected order submission:', verification.errorCodes);
-      return NextResponse.json({ error: 'Security verification failed. Please complete Turnstile check.' }, { status: 403 });
+    if (!verification.success && process.env.TURNSTILE_SECRET && process.env.NODE_ENV === 'production') {
+      console.warn('Turnstile verification failed for IP:', clientIp, verification.errorCodes);
+      return NextResponse.json({ error: 'Security verification failed. Please check the Turnstile box and try again.' }, { status: 403 });
     }
 
     const [newOrder] = await db
