@@ -48,11 +48,9 @@ export function DashboardChart({ statusBreakdown, totalSales }: ChartProps) {
             <h3 className="text-sm sm:text-base font-extrabold text-white">Live Order Volume Chart</h3>
             <p className="text-xs text-gray-400">Order count distribution by status</p>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs font-bold text-[#FF4FA0] px-3 py-1 bg-[#2B0A1F] rounded-full">
-              ChartKit Realtime
-            </span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[10px] font-semibold text-gray-500 tracking-wide">Live</span>
           </div>
         </div>
 
@@ -76,27 +74,27 @@ export function DashboardChart({ statusBreakdown, totalSales }: ChartProps) {
       </div>
 
       {/* Realtime Donut Chart */}
-      <div className="p-4 sm:p-6 rounded-3xl bg-[#0A0A0A] border border-[#2B0A1F] flex flex-col justify-between shadow-xl">
+      <div className="p-4 sm:p-6 rounded-3xl bg-[#0A0A0A] border border-[#2B0A1F] flex flex-col justify-between shadow-xl min-h-[340px]">
         <div>
           <h3 className="text-sm sm:text-base font-extrabold text-white">Pipeline Share</h3>
           <p className="text-xs text-gray-400">Order conversion status ratio</p>
         </div>
 
-        <div className="w-full flex items-center justify-center my-4 overflow-hidden">
+        <div className="flex-1 flex items-center justify-center py-4">
           {totalCount > 0 ? (
             <DonutChart
               data={donutData}
               dataKey="value"
               labelKey="label"
               theme="midnight"
-              size={220}
+              size={160}
               innerRadius={0.6}
               showLegend
               legendPosition="right"
               padAngle={2}
             />
           ) : (
-            <div className="py-10 text-center space-y-2">
+            <div className="py-6 text-center space-y-2">
               <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#2B0A1F] flex items-center justify-center mx-auto text-gray-600">
                 0
               </div>
