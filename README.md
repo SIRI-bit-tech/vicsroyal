@@ -1,6 +1,6 @@
 # VIC ROYAL BEAUTY — Luxury Hair Storefront
 
-A production-ready, high-performance single-vendor hair e-commerce storefront for **VIC ROYAL BEAUTY** (wigs, raw human hair bundles, HD lace closures, frontals, extensions, and luxury accessories). Built with Next.js 16 (App Router), Drizzle ORM + CockroachDB, Motion (`motion/react`), Embla Carousel, and direct WhatsApp order hand-off.
+A production-ready, high-performance single-vendor hair e-commerce storefront for **VIC ROYAL BEAUTY** (wigs, raw human hair bundles, HD lace closures, frontals, extensions, and luxury accessories). Built with Next.js 16 (App Router), Drizzle ORM + Neon PostgreSQL, Motion (`motion/react`), Embla Carousel, and direct WhatsApp order hand-off.
 
 ---
 
@@ -45,13 +45,13 @@ A production-ready, high-performance single-vendor hair e-commerce storefront fo
 
 ### Prerequisites
 - [Bun](https://bun.sh) (or Node.js 18+)
-- CockroachDB / PostgreSQL Database Connection URL
+- Neon Serverless PostgreSQL Database Connection URL
 
 ### 1. Environment Configuration
 Create a `.env.local` file in the root directory:
 
 ```env
-DATABASE_URL="postgresql://user:password@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full"
+DATABASE_URL="postgresql://user:password@ep-sample-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require"
 NEXT_PUBLIC_ADMIN_WHATSAPP_NUMBER="2348000000000"
 JWT_SECRET="your_secure_admin_jwt_secret"
 UPLOADTHING_TOKEN="your_uploadthing_token"

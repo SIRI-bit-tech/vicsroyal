@@ -4,7 +4,7 @@ import { CartProvider } from '@/context/cart-context';
 import { StorefrontWrapper } from '@/components/layout/storefront-wrapper';
 import { StorefrontSchema } from '@/components/seo/json-ld';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vicroyalbeauty.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vicsroyalbeauty.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

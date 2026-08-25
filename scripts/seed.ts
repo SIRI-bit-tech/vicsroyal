@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 async function seed() {
-  console.log('--- SEEDING COCKROACHDB DATABASE ---');
+  console.log('--- SEEDING NEON POSTGRESQL DATABASE ---');
 
   // 1. Ensure Categories exist and map IDs
   const categoryData = [

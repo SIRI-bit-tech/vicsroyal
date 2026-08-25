@@ -82,7 +82,7 @@ export default function RegisterAdminPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@vicroyalbeauty.com"
+              placeholder="admin@vicsroyalbeauty.com"
               className="w-full px-4 py-3 rounded-xl bg-[#2B0A1F]/40 border border-[#2B0A1F] text-white focus:outline-none focus:border-[#E6007E]"
             />
           </div>

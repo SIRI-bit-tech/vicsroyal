@@ -16,7 +16,7 @@ export function JsonLd({ data }: JsonLdProps) {
 }
 
 export function StorefrontSchema() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vicroyalbeauty.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vicsroyalbeauty.com';
 
   const storeSchema = {
     '@context': 'https://schema.org',

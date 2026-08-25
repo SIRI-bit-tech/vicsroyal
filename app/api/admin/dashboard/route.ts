@@ -2,15 +2,26 @@ import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { orders, products } from '@/db/schema';
 import { getAdminSession } from '@/lib/auth';
-import { desc, count, sql } from 'drizzle-orm';
+import { desc } from 'drizzle-orm';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const session = await getAdminSession();
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
   try {
-    const allOrders = await db.select().from(orders).orderBy(desc(orders.createdAt));
-    const allProducts = await db.select({ id: products.id }).from(products);
+    const session = await getAdminSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const allOrders = await db.select().from(orders).orderBy(desc(orders.createdAt)).catch((err) => {
+      console.error('Failed to query orders table:', err);
+      return [];
+    });
+
+    const allProducts = await db.select({ id: products.id }).from(products).catch((err) => {
+      console.error('Failed to query products table:', err);
+      return [];
+    });
 
     let totalSales = 0;
     let pendingCount = 0;
@@ -20,7 +31,7 @@ export async function GET() {
 
     allOrders.forEach((o) => {
       const amt = parseFloat(String(o.totalAmount || 0));
-      if (o.status === 'fulfilled') totalSales += amt;
+      if (o.status === 'fulfilled') totalSales += isNaN(amt) ? 0 : amt;
       if (o.status === 'pending') pendingCount++;
       if (o.status === 'contacted') contactedCount++;
       if (o.status === 'fulfilled') fulfilledCount++;
@@ -42,6 +53,8 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching dashboard stats:', error);
-    return NextResponse.json({ error: 'Failed to load stats' }, { status: 500 });
+    return NextResponse.json({
+      error: error instanceof Error ? error.message : 'Failed to load stats',
+    }, { status: 500 });
   }
 }

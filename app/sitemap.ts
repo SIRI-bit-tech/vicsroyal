@@ -3,7 +3,7 @@ import { db } from '@/db';
 import { products, categories } from '@/db/schema';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vicroyalbeauty.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vicsroyalbeauty.com';
 
   // 1. Base static routes
   const routes: MetadataRoute.Sitemap = [

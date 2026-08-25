@@ -6,6 +6,8 @@ import { Header } from './header';
 import { Footer } from './footer';
 import { CartDrawer } from '../cart/cart-drawer';
 import { FloatingWhatsAppButton } from '../ui/floating-whatsapp-button';
+import { SalesTicker } from '../home/sales-ticker';
+import { PromoPopupModal } from '../home/promo-popup';
 
 interface StorefrontWrapperProps {
   children: React.ReactNode;
@@ -22,11 +24,13 @@ export function StorefrontWrapper({ children }: StorefrontWrapperProps) {
 
   return (
     <>
+      <SalesTicker />
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
       <CartDrawer />
       <FloatingWhatsAppButton />
+      <PromoPopupModal />
     </>
   );
 }
