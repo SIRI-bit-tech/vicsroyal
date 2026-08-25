@@ -84,24 +84,17 @@ export function DashboardChart({ statusBreakdown, totalSales }: ChartProps) {
 
         <div className="w-full flex items-center justify-center my-4 overflow-hidden">
           {totalCount > 0 ? (
-            <ResponsiveChart height={220}>
-              {({ width }) => {
-                const size = Math.min(width, 220);
-                return (
-                  <DonutChart
-                    data={donutData}
-                    dataKey="value"
-                    labelKey="label"
-                    theme="midnight"
-                    size={size}
-                    innerRadius={0.6}
-                    showLegend
-                    legendPosition={width < 300 ? 'bottom' : 'right'}
-                    padAngle={2}
-                  />
-                );
-              }}
-            </ResponsiveChart>
+            <DonutChart
+              data={donutData}
+              dataKey="value"
+              labelKey="label"
+              theme="midnight"
+              size={220}
+              innerRadius={0.6}
+              showLegend
+              legendPosition="right"
+              padAngle={2}
+            />
           ) : (
             <div className="py-10 text-center space-y-2">
               <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#2B0A1F] flex items-center justify-center mx-auto text-gray-600">
