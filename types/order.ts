@@ -14,6 +14,7 @@ export interface Order {
   phoneNumber: string;
   deliveryAddress: string;
   notes?: string | null;
+  promoCode?: string | null;
   items: OrderItemSnapshot[];
   totalAmount: number; // Stored in whole naira
   status: OrderStatus;
@@ -25,6 +26,7 @@ export interface CheckoutFormData {
   phoneNumber: string;
   deliveryAddress: string;
   notes?: string;
+  promoCode?: string;
 }
 
 export interface CartItem {

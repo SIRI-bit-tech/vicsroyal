@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Tag } from 'lucide-react';
 import { useCart } from '@/context/cart-context';
 import { buildWhatsAppOrderUrl } from '@/lib/whatsapp';
 import { DEFAULT_WHATSAPP_NUMBER } from '@/constants';
@@ -18,6 +18,7 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
   const [customerName, setCustomerName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [promoCode, setPromoCode] = useState('');
   const [notes, setNotes] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,6 +53,7 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
           customerName,
           phoneNumber,
           deliveryAddress,
+          promoCode: promoCode.trim() || null,
           notes,
           items: snapshotItems,
           totalAmount: subtotal,
@@ -68,6 +70,7 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
         phoneNumber,
         deliveryAddress,
         notes,
+        promoCode: promoCode.trim() || null,
         items: snapshotItems,
         totalAmount: subtotal,
         baseUrl,
@@ -120,7 +123,23 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
                 <textarea required rows={2} value={deliveryAddress} onChange={(e) => setDeliveryAddress(e.target.value)} placeholder="Street address, city, state" className="w-full px-4 py-3 rounded-xl bg-[#2B0A1F]/40 border border-[#2B0A1F] text-white" />
               </div>
               <div>
-                <label className="block font-bold text-gray-300 mb-1">Optional Order Notes</label>
+                <label className="block font-bold text-gray-300 mb-1 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5"><Tag className="w-3.5 h-3.5 text-[#FF4FA0]" /> Promo / Discount Code</span>
+                  <span className="text-[11px] font-normal text-gray-400">Optional</span>
+                </label>
+                <input
+                  type="text"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value)}
+                  placeholder="e.g. ROYAL15 (optional)"
+                  className="w-full px-4 py-3 rounded-xl bg-[#2B0A1F]/40 border border-[#2B0A1F] text-white uppercase placeholder:normal-case focus:outline-none focus:border-[#FF4FA0]"
+                />
+              </div>
+              <div>
+                <label className="block font-bold text-gray-300 mb-1 flex items-center justify-between">
+                  <span>Order Notes</span>
+                  <span className="text-[11px] font-normal text-gray-400">Optional</span>
+                </label>
                 <input type="text" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Cap size or length preference" className="w-full px-4 py-3 rounded-xl bg-[#2B0A1F]/40 border border-[#2B0A1F] text-white" />
               </div>
 
@@ -135,6 +154,7 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
             phoneNumber={phoneNumber}
             deliveryAddress={deliveryAddress}
             notes={notes}
+            promoCode={promoCode}
             items={items}
             subtotal={subtotal}
             isSubmitting={isSubmitting}

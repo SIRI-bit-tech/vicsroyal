@@ -73,11 +73,16 @@ async function initDb() {
         phone_number TEXT NOT NULL,
         delivery_address TEXT NOT NULL,
         notes TEXT,
+        promo_code TEXT,
         items JSONB NOT NULL,
         total_amount NUMERIC(12, 0) NOT NULL,
         status TEXT NOT NULL DEFAULT 'pending',
         created_at TIMESTAMP NOT NULL DEFAULT NOW()
       );
+    `);
+
+    await db.execute(sql`
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS promo_code TEXT;
     `);
 
     await db.execute(sql`

@@ -7,6 +7,7 @@ export const orders = pgTable('orders', {
   phoneNumber: text('phone_number').notNull(),
   deliveryAddress: text('delivery_address').notNull(),
   notes: text('notes'),
+  promoCode: text('promo_code'),
   items: jsonb('items').$type<OrderItemSnapshot[]>().notNull(),
   totalAmount: numeric('total_amount', { precision: 12, scale: 0 }).notNull(), // Whole naira
   status: text('status', { enum: ['pending', 'contacted', 'fulfilled', 'abandoned'] }).default('pending').notNull(),

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShoppingBag, Menu, X } from 'lucide-react';
 import { useCart } from '@/context/cart-context';
 import { Category } from '@/types/product';
@@ -32,9 +33,12 @@ export function Header({ initialCategories }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full bg-[#0A0A0A]/90 backdrop-blur-md border-b border-[#2B0A1F]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl font-extrabold tracking-tight text-white">
+        {/* Brand Logo with Official Graphic */}
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#E6007E]/50 group-hover:border-[#FF4FA0] transition-colors flex-shrink-0">
+            <Image src="/logo.png" alt="VIC ROYAL BEAUTY Logo" fill className="object-cover" priority />
+          </div>
+          <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
             VIC ROYAL <span className="text-[#E6007E]">BEAUTY</span>
           </span>
         </Link>

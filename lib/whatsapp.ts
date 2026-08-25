@@ -6,6 +6,7 @@ export interface WhatsAppMessageParams {
   phoneNumber: string;
   deliveryAddress: string;
   notes?: string | null;
+  promoCode?: string | null;
   items: OrderItemSnapshot[];
   totalAmount: number;
   baseUrl: string;
@@ -18,6 +19,7 @@ export function buildWhatsAppOrderUrl(params: WhatsAppMessageParams): string {
     phoneNumber,
     deliveryAddress,
     notes,
+    promoCode,
     items,
     totalAmount,
     baseUrl,
@@ -28,6 +30,9 @@ export function buildWhatsAppOrderUrl(params: WhatsAppMessageParams): string {
   message += `👤 *Customer:* ${customerName}\n`;
   message += `📞 *Phone:* ${phoneNumber}\n`;
   message += `📍 *Delivery Address:* ${deliveryAddress}\n`;
+  if (promoCode) {
+    message += `🎟️ *Promo Code:* ${promoCode.toUpperCase()}\n`;
+  }
   if (notes) {
     message += `📝 *Notes:* ${notes}\n`;
   }

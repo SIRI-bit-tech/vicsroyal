@@ -109,10 +109,15 @@ export default function AdminOrdersPage() {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center pt-3 border-t border-[#2B0A1F]">
-                {order.notes ? (
-                  <p className="text-xs text-gray-400 italic">Note: {order.notes}</p>
-                ) : <div />}
+              <div className="flex flex-wrap justify-between items-center pt-3 border-t border-[#2B0A1F] gap-2">
+                <div className="flex items-center gap-3 text-xs">
+                  {order.promoCode && (
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#E6007E]/20 border border-[#E6007E]/50 text-[#FF4FA0] font-bold">
+                      Promo: {order.promoCode}
+                    </span>
+                  )}
+                  {order.notes && <span className="text-gray-400 italic">Note: {order.notes}</span>}
+                </div>
                 <div className="text-sm font-bold text-white">
                   Total: <span className="text-base text-[#FF4FA0] font-black">{formatNaira(order.totalAmount)}</span>
                 </div>

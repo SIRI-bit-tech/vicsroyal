@@ -13,19 +13,6 @@ export const metadata: Metadata = {
     template: '%s | VIC ROYAL BEAUTY',
   },
   description: 'Shop 100% Virgin Human Hair wigs, raw Cambodian bundles, HD lace closures, frontals, and luxury hair accessories. Direct WhatsApp sales concierge & worldwide express delivery.',
-  keywords: [
-    'virgin hair wigs',
-    'bone straight wig',
-    'raw human hair bundles',
-    'hd lace closure',
-    '5x5 closure wig',
-    'frontals lagos',
-    'hair extensions nigeria',
-    'vic royal beauty',
-  ],
-  alternates: {
-    canonical: siteUrl,
-  },
   openGraph: {
     type: 'website',
     locale: 'en_NG',
@@ -48,6 +35,17 @@ export const metadata: Metadata = {
     description: '100% Virgin Human Hair wigs, bundles, closures & frontals with instant WhatsApp ordering.',
     images: [`${siteUrl}/hero/hero-1.png`],
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+  manifest: '/site.webmanifest',
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
   },

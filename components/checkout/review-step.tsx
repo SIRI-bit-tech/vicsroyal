@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ArrowLeft, Send } from 'lucide-react';
+import { ArrowLeft, Send, Tag } from 'lucide-react';
 import { CartItem } from '@/types/order';
 import { formatNaira } from '@/lib/format-currency';
 
@@ -10,6 +10,7 @@ interface ReviewStepProps {
   phoneNumber: string;
   deliveryAddress: string;
   notes?: string;
+  promoCode?: string;
   items: CartItem[];
   subtotal: number;
   isSubmitting: boolean;
@@ -22,6 +23,7 @@ export function ReviewStep({
   phoneNumber,
   deliveryAddress,
   notes,
+  promoCode,
   items,
   subtotal,
   isSubmitting,
@@ -45,6 +47,11 @@ export function ReviewStep({
         <div className="text-xs space-y-1">
           <p className="text-gray-400"><strong className="text-white">Customer:</strong> {customerName} ({phoneNumber})</p>
           <p className="text-gray-400"><strong className="text-white">Address:</strong> {deliveryAddress}</p>
+          {promoCode && (
+            <p className="text-[#FF4FA0] font-bold flex items-center gap-1.5 pt-0.5">
+              <Tag className="w-3.5 h-3.5" /> Promo Code: <span className="px-2 py-0.5 rounded-full bg-[#E6007E]/30 border border-[#E6007E]/50 text-white uppercase">{promoCode}</span>
+            </p>
+          )}
           {notes && <p className="text-gray-400"><strong className="text-white">Note:</strong> {notes}</p>}
         </div>
 

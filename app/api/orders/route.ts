@@ -5,7 +5,7 @@ import { orders } from '@/db/schema';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { customerName, phoneNumber, deliveryAddress, notes, items, totalAmount } = body;
+    const { customerName, phoneNumber, deliveryAddress, notes, promoCode, items, totalAmount } = body;
 
     if (!customerName || !phoneNumber || !deliveryAddress || !items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ error: 'Missing required order fields' }, { status: 400 });
@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
         phoneNumber,
         deliveryAddress,
         notes: notes || null,
+        promoCode: promoCode ? String(promoCode).trim().toUpperCase() : null,
         items,
         totalAmount: String(totalAmount),
         status: 'pending',

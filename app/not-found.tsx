@@ -1,6 +1,13 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ShoppingBag } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: '404 — Page Not Found | VIC ROYAL BEAUTY',
+  description: 'The requested page does not exist or has been moved.',
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (

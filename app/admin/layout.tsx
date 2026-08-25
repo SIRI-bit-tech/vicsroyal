@@ -1,6 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getAdminSession } from '@/lib/auth';
 import { LayoutDashboard, ShoppingBag, Layers, Image as ImageIcon, MessageSquare, ShoppingCart, LogOut } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -23,11 +24,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       {/* Sidebar */}
       <aside className="w-full md:w-64 bg-[#0A0A0A] border-r border-[#2B0A1F] p-6 flex flex-col justify-between">
         <div>
-          <div className="mb-8">
-            <h2 className="text-xl font-black text-white">
-              VIC ROYAL <span className="text-[#E6007E]">ADMIN</span>
-            </h2>
-            <p className="text-xs text-gray-500 truncate mt-1">{session.email}</p>
+          <div className="mb-8 flex items-center gap-3">
+            <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#E6007E]/50 flex-shrink-0">
+              <Image src="/logo.png" alt="Logo" fill className="object-cover" />
+            </div>
+            <div>
+              <h2 className="text-base font-black text-white leading-tight">
+                VIC ROYAL <span className="text-[#E6007E]">ADMIN</span>
+              </h2>
+              <p className="text-[10px] text-gray-500 truncate mt-0.5">{session.email}</p>
+            </div>
           </div>
 
           <nav className="space-y-2">

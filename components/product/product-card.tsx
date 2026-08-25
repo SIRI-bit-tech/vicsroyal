@@ -23,6 +23,10 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   const mainImage = product.images[0] || '/seed/products/hair-product-1-1.jpg';
+  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
+  const discountPercent = hasDiscount
+    ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
+    : 0;
 
   return (
     <motion.article
@@ -45,6 +49,11 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
+          {hasDiscount && (
+            <span className="px-2.5 py-1 rounded-full bg-emerald-600 text-white font-black text-[10px] tracking-wider uppercase shadow-md animate-pulse">
+              -{discountPercent}% OFF
+            </span>
+          )}
           {product.isNewArrival && (
             <span className="px-2.5 py-1 rounded-full bg-[#FF4FA0] text-white font-black text-[10px] tracking-wider uppercase shadow-md">
               New Arrival
@@ -55,7 +64,7 @@ export function ProductCard({ product }: ProductCardProps) {
               Best Seller
             </span>
           )}
-          {product.isFeatured && !product.isBestSeller && !product.isNewArrival && (
+          {product.isFeatured && !product.isBestSeller && !product.isNewArrival && !hasDiscount && (
             <span className="px-2.5 py-1 rounded-full bg-purple-600 text-white font-black text-[10px] tracking-wider uppercase shadow-md">
               Featured
             </span>
@@ -73,13 +82,20 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Pricing & Cart Action */}
         <div className="flex items-center justify-between pt-3 border-t border-[#2B0A1F]">
           <div>
-            <div className="text-lg font-extrabold text-[#FF4FA0]">
-              {formatNaira(product.price)}
+            <div className="flex items-baseline gap-2">
+              <span className="text-lg font-extrabold text-[#FF4FA0]">
+                {formatNaira(product.price)}
+              </span>
+              {hasDiscount && (
+                <span className="text-xs text-gray-500 line-through">
+                  {formatNaira(product.compareAtPrice!)}
+                </span>
+              )}
             </div>
-            {product.compareAtPrice && (
-              <div className="text-xs text-gray-500 line-through">
-                {formatNaira(product.compareAtPrice)}
-              </div>
+            {hasDiscount && (
+              <span className="text-[10px] font-bold text-emerald-400">
+                Save {formatNaira(product.compareAtPrice! - product.price)}
+              </span>
             )}
           </div>
 

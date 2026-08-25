@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { ShoppingBag, CheckCircle, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, CheckCircle, ShieldCheck, Tag } from 'lucide-react';
 import { Product } from '@/types/product';
 import { formatNaira } from '@/lib/format-currency';
 import { useCart } from '@/context/cart-context';
@@ -26,6 +26,12 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
     setIsCartOpen(true);
   };
 
+  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
+  const discountPercent = hasDiscount
+    ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
+    : 0;
+  const savings = hasDiscount ? product.compareAtPrice! - product.price : 0;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -40,14 +46,21 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
-            {product.isNewArrival && (
-              <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-[#FF4FA0] text-white font-black text-xs uppercase shadow-lg">
-                New Arrival
-              </span>
-            )}
+            <div className="absolute top-4 left-4 flex flex-col gap-2">
+              {hasDiscount && (
+                <span className="px-3.5 py-1.5 rounded-full bg-emerald-600 text-white font-black text-xs uppercase shadow-lg animate-pulse">
+                  SAVE {discountPercent}% OFF
+                </span>
+              )}
+              {product.isNewArrival && (
+                <span className="px-3.5 py-1.5 rounded-full bg-[#FF4FA0] text-white font-black text-xs uppercase shadow-lg">
+                  New Arrival
+                </span>
+              )}
+            </div>
           </div>
 
-          {/* Secondary Gallery Photos Below Main Image */}
+          {/* Secondary Gallery Photos */}
           {productImages.length > 1 && (
             <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
               {productImages.map((img, idx) => (
@@ -72,10 +85,21 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
             <h1 className="text-3xl sm:text-4xl font-black text-white mt-1">{product.name}</h1>
           </div>
 
-          <div className="flex items-baseline gap-4">
-            <span className="text-3xl font-extrabold text-[#FF4FA0]">{formatNaira(product.price)}</span>
-            {product.compareAtPrice && (
-              <span className="text-lg text-gray-500 line-through">{formatNaira(product.compareAtPrice)}</span>
+          {/* Pricing & Discount Highlights */}
+          <div className="p-4 rounded-2xl bg-[#2B0A1F]/30 border border-[#2B0A1F] space-y-2">
+            <div className="flex flex-wrap items-baseline gap-3">
+              <span className="text-3xl sm:text-4xl font-black text-[#FF4FA0]">{formatNaira(product.price)}</span>
+              {hasDiscount && (
+                <span className="text-lg text-gray-400 line-through font-medium">{formatNaira(product.compareAtPrice!)}</span>
+              )}
+              {hasDiscount && (
+                <span className="px-2.5 py-1 rounded-lg bg-emerald-950/80 border border-emerald-700 text-emerald-300 text-xs font-black flex items-center gap-1">
+                  <Tag className="w-3 h-3" /> Save {formatNaira(savings)} ({discountPercent}% OFF)
+                </span>
+              )}
+            </div>
+            {hasDiscount && (
+              <p className="text-[11px] text-emerald-400 font-semibold">Special promotional price applied automatically at checkout.</p>
             )}
           </div>
 
