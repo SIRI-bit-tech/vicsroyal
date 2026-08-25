@@ -39,6 +39,7 @@ export function CheckoutModal({ onClose }: CheckoutModalProps) {
 
     const snapshotItems = items.map((i) => ({
       productId: i.product.id,
+      slug: i.product.slug,
       name: i.product.name,
       price: i.product.price,
       quantity: i.quantity,

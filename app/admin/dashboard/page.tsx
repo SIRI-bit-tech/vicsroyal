@@ -73,7 +73,7 @@ export default function AdminDashboardPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white">Live Admin Dashboard</h1>
+          <h1 className="text-xl sm:text-3xl font-black text-white">Live Admin Dashboard</h1>
           <p className="text-xs text-gray-400 mt-1">Real-time overview of sales, WhatsApp order leads, and product inventory.</p>
         </div>
         <div className="flex items-center gap-3">
@@ -140,31 +140,57 @@ export default function AdminDashboardPage() {
         </div>
 
         {s.recentOrders.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[#2B0A1F]/50 text-gray-300 uppercase">
-                <tr><th className="p-3">Customer</th><th className="p-3">Phone</th><th className="p-3">Total</th><th className="p-3">Status</th></tr>
-              </thead>
-              <tbody className="divide-y divide-[#2B0A1F] text-gray-300">
-                {s.recentOrders.map((o) => (
-                  <tr key={o.id} className="hover:bg-[#2B0A1F]/20 transition-colors">
-                    <td className="p-3 font-bold text-white">{o.customerName}</td>
-                    <td className="p-3 text-gray-400">{o.phoneNumber}</td>
-                    <td className="p-3 font-bold text-[#FF4FA0]">{formatNaira(o.totalAmount)}</td>
-                    <td className="p-3 capitalize">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                        o.status === 'fulfilled' ? 'bg-emerald-900/50 text-emerald-300' :
-                        o.status === 'contacted' ? 'bg-blue-900/50 text-blue-300' :
-                        o.status === 'abandoned' ? 'bg-red-900/50 text-red-300' :
-                        'bg-amber-900/50 text-amber-300'
-                      }`}>
-                        {o.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div>
+            {/* Table — visible on md+ */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[#2B0A1F]/50 text-gray-300 uppercase">
+                  <tr><th className="p-3">Customer</th><th className="p-3">Phone</th><th className="p-3">Total</th><th className="p-3">Status</th></tr>
+                </thead>
+                <tbody className="divide-y divide-[#2B0A1F] text-gray-300">
+                  {s.recentOrders.map((o) => (
+                    <tr key={o.id} className="hover:bg-[#2B0A1F]/20 transition-colors">
+                      <td className="p-3 font-bold text-white">{o.customerName}</td>
+                      <td className="p-3 text-gray-400">{o.phoneNumber}</td>
+                      <td className="p-3 font-bold text-[#FF4FA0]">{formatNaira(o.totalAmount)}</td>
+                      <td className="p-3 capitalize">
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                          o.status === 'fulfilled' ? 'bg-emerald-900/50 text-emerald-300' :
+                          o.status === 'contacted' ? 'bg-blue-900/50 text-blue-300' :
+                          o.status === 'abandoned' ? 'bg-red-900/50 text-red-300' :
+                          'bg-amber-900/50 text-amber-300'
+                        }`}>
+                          {o.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Card list — visible on mobile only */}
+            <div className="md:hidden space-y-3">
+              {s.recentOrders.map((o) => (
+                <div key={o.id} className="p-4 rounded-2xl bg-[#2B0A1F]/20 border border-[#2B0A1F] space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white text-sm">{o.customerName}</span>
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${
+                      o.status === 'fulfilled' ? 'bg-emerald-900/50 text-emerald-300' :
+                      o.status === 'contacted' ? 'bg-blue-900/50 text-blue-300' :
+                      o.status === 'abandoned' ? 'bg-red-900/50 text-red-300' :
+                      'bg-amber-900/50 text-amber-300'
+                    }`}>
+                      {o.status}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-400">{o.phoneNumber}</span>
+                    <span className="font-bold text-[#FF4FA0]">{formatNaira(o.totalAmount)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <div className="py-8 text-center text-gray-500 text-xs">

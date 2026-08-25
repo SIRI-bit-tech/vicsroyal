@@ -2,6 +2,7 @@ export type OrderStatus = 'pending' | 'contacted' | 'fulfilled' | 'abandoned';
 
 export interface OrderItemSnapshot {
   productId: string;
+  slug: string;
   name: string;
   price: number; // Snapshot of whole naira price at time of order
   quantity: number;

@@ -43,7 +43,7 @@ export function buildWhatsAppOrderUrl(params: WhatsAppMessageParams): string {
     const itemTotal = item.price * item.quantity;
     message += `${index + 1}. *${item.name}*\n`;
     message += `   Qty: ${item.quantity} × ${formatNaira(item.price)} = ${formatNaira(itemTotal)}\n`;
-    message += `   Link: ${baseUrl}/product/${item.productId}\n\n`;
+    message += `   Link: ${baseUrl}/product/${item.slug}\n\n`;
   });
 
   message += `------------------------------\n`;
