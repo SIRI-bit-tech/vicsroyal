@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { CartProvider } from '@/context/cart-context';
 import { StorefrontWrapper } from '@/components/layout/storefront-wrapper';
@@ -66,6 +67,7 @@ export default function RootLayout({
         <CartProvider>
           <StorefrontWrapper>{children}</StorefrontWrapper>
         </CartProvider>
+        <Analytics />
       </body>
     </html>
   );

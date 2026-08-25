@@ -16,6 +16,7 @@
     "@derpdaderp/chartkit": "^0.4.1",
     "@neondatabase/serverless": "^1.1.0",
     "@uploadthing/react": "^7.3.0",
+    "@vercel/analytics": "^2.0.1",
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.40.1",
