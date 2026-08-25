@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function Footer() {
   return (
@@ -14,9 +15,41 @@ export function Footer() {
               VIC ROYAL <span className="text-[#E6007E]">BEAUTY</span>
             </h3>
           </div>
-          <p className="text-sm text-gray-400 leading-relaxed max-w-md">
+          <p className="text-sm text-gray-400 leading-relaxed max-w-md mb-4">
             Your premier destination for 100% Virgin Hair wigs, raw human hair bundles, HD closures, frontals, and luxury accessories.
           </p>
+
+          {/* Official Social Media Links */}
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-bold text-gray-300">Follow Us:</span>
+            {/* Instagram with Official Logo */}
+            <Link
+              href="https://www.instagram.com/vicsroyal_beauty?igsi=MXU0dzM0NjRpejF4"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#2B0A1F]/60 border border-[#2B0A1F] hover:border-[#E6007E] text-gray-300 hover:text-white transition-all group"
+              title="Follow us on Instagram"
+            >
+              <div className="relative w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform">
+                <Image src="/instagram.png" alt="Instagram Logo" fill className="object-contain" />
+              </div>
+              <span className="text-xs font-semibold">Instagram</span>
+            </Link>
+
+            {/* TikTok with Official Logo */}
+            <Link
+              href="https://www.tiktok.com/@vicsroyalbeauty?_r=1&_t=ZS-99APdALNLTZ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#2B0A1F]/60 border border-[#2B0A1F] hover:border-[#FF4FA0] text-gray-300 hover:text-white transition-all group"
+              title="Follow us on TikTok"
+            >
+              <div className="relative w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform">
+                <Image src="/tiktok.png" alt="TikTok Logo" fill className="object-contain" />
+              </div>
+              <span className="text-xs font-semibold">TikTok</span>
+            </Link>
+          </div>
         </div>
 
         <div>
